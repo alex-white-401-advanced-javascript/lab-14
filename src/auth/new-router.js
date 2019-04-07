@@ -1,68 +1,47 @@
 'use strict';
 
-/*
-          *************** CLI Commands To Populate MONGODB ******************
-echo '{"role":"admin", "capabilities":["create","read","update","delete"]}' | http :3000/roles
-echo '{"role":"editor", "capabilities":["create", "read", "update"]}' | http :3000/roles
-echo '{"role":"user", "capabilities":["read"]}' | http :3000/roles
-
-echo '{"username":"jerry", "password":"jerry", "role":"editor"}' | http :3000/signup
-http post :3000/signin "Authorization: Bearer token"
-dude forever key: 
-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjYTY4ZDE5MDhlYTY0MmRlYmI0MzNkMyIsImNhcGFiaWxpdGllcyI6WyJyZWFkIl0sInR5cGUiOiJrZXkiLCJpYXQiOjE1NTQ0MTk2NzN9.I60vjfKmRyGT9HFlPc3YAKqAEL3H0tGfNiwBGbV-MZ8
-*/
-
 const express = require('express');
 const router = express.Router();
 
 const auth = require('./middleware.js');
 const Role = require('./roles-model.js');
 
-// to populate roles collection in mongoDB --- Shout out to Billy!
 router.post('/roles', (req,res,next) => {
   let role = new Role(req.body);
   role.save();
   res.status(200).send('Saved role to MONGODB');
 });
 
-// router.get('/public-stuff') should be visible by anyone
 router.get('/public-stuff', auth(),(req,res,next) => {
   res.status(200).send(' For Everyone!! :D ');
 });
 
-// router.get('/hidden-stuff') should require only a valid login
 router.get('/hidden-stuff', auth(),(req,res,next) => {
-  res.status(200).send('Shhh… here\'s the hidden stuff.');
+  res.status(200).send('Not for everyone');
 });
 
-// router.get('/something-to-read') should require the read capability
 router.get('/something-to-read', auth(),(req,res,next) => {
-  res.status(200).send('Here\'s something for you to read.');
+  res.status(200).send('Read a dis');
 });
 
-// router.post('/create-a-thing) should require the create capability
 router.post('/create-a-thing', auth(),(req,res,next) => {
-  res.status(200).send('You can create a thing.');
+  res.status(200).send('Create a thing');
 });
 
-// router.put('/update) should require the update capability
 router.put('/update', auth(),(req,res,next) => {
-  res.status(200).send('You can update things.');
+  res.status(200).send('Update a thing');
 });
 
-// router.patch('/jp) should require the update capability
 router.patch('/jp', auth('update'),(req,res,next) => {
-  res.status(200).send('You can also update things.');
+  res.status(200).send('Update a things');
 });
 
-// router.delete('/bye-bye) should require the delete capability
 router.delete('/bye-bye', auth('delete'),(req,res,next) => {
-  res.status(200).send('You can delete things.');
+  res.status(200).send('Delete a thing');
 });
 
-// router.get('/everything') should require the superuser capability
 router.get('/everything', auth(),(req,res,next) => {
-  res.status(200).send('You can do EVERYTHING.');
+  res.status(200).send('Do it all');
 });
 
 module.exports = router;
