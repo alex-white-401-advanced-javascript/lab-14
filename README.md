@@ -6,7 +6,7 @@
 ### Author: Alexander White
 
 ### Links and Resources
-* [PR](https://github.com/alex-white-401-advanced-javascript/lab-14/pull/1)
+* [PR]()
 * [Heroku](https://salty-depths-90813.herokuapp.com/)
 
 #### Documentation
